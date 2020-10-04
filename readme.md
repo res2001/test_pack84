@@ -24,7 +24,7 @@ g++ --std=c++17 -o pack84 pack84.cpp
 mkdir build
 cd build
 cmake ..
-make
+cmake --build .
 ```
 ## msys2/mingw
 ```bash
