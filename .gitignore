@@ -1,0 +1,4 @@
+*.log
+*.txt
+CMakeLists.txt.user*
+
