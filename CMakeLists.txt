@@ -6,3 +6,6 @@ set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 add_executable(pack84 pack84.cpp portable_endian.h)
+if(WIN32)
+    target_link_libraries(pack84 ws2_32)
+endif()

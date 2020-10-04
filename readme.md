@@ -26,6 +26,14 @@ cd build
 cmake ..
 make
 ```
+## msys2/mingw
+```bash
+g++ --std=c++17 -o pack84 pack84.cpp -lws2_32
+```
+## MSVC (cl)
+```bash
+cl /std:c++17 pack84.cpp ws2_32.lib
+```
 # Run
 ```bash
 ./pack84 <16-bits Context ID> <32-bits DCN Address> <32-bits Local TCP-ID>

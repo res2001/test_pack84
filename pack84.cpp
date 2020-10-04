@@ -27,15 +27,16 @@ static void usage(const char *progname)
     std::clog << "Usage: " << progname << " <16-bits Context ID> <32-bits DCN Address> <32-bits Local TCP-ID>" << std::endl;
 }
 
-static long strtol_and_validate(const char *str, const char *name, long min, long max)
+static long strtol_and_validate(const char *str, const char *name, int64_t min, int64_t max)
 {
     assert(str && name);
     char *str_end = nullptr;
     errno = 0;
-    const long tmp_var = std::strtol(str, & str_end, 0);
+    const int64_t tmp_var = std::strtoll(str, & str_end, 0);
     if(errno == ERANGE || (str_end != nullptr && *str_end != 0) || tmp_var < min || tmp_var > max)
     {
-        std::cerr << name << " error (value is must be range [" << min << "; " << max << "])" << std::endl;
+        std::cerr << name << " error: " << tmp_var << std::endl
+                  << "Value is must be range [" << min << "; " << max << "]." << std::endl;
         exit(2);
     }
     return tmp_var;
@@ -165,11 +166,10 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    data_s data = {
-        .ctx_id = static_cast<std::uint16_t>(strtol_and_validate(argv[1], "Context ID", 0, UINT16_MAX)),
-        .dcn_adr = static_cast<std::uint32_t>(strtol_and_validate(argv[2], "DCN Address", 0, UINT32_MAX)),
-        .tcp_id = static_cast<std::uint32_t>(strtol_and_validate(argv[3], "Local TCP-ID", 0, UINT32_MAX))
-    };
+    data_s data;
+    data.ctx_id = static_cast<std::uint16_t>(strtol_and_validate(argv[1], "Context ID", 0, UINT16_MAX));
+    data.dcn_adr = static_cast<std::uint32_t>(strtol_and_validate(argv[2], "DCN Address", 0, UINT32_MAX));
+    data.tcp_id = static_cast<std::uint32_t>(strtol_and_validate(argv[3], "Local TCP-ID", 0, UINT32_MAX));
     print_data("Original value:", data);
 
     uint8_t buf[buf_size] = { 0 };
